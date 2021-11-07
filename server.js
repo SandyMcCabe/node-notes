@@ -49,7 +49,29 @@ app.post('/api/notes', (req, res) => {
     // }
   });
 
+  app.delete('/api/notes', (req, res) => {
+    let ID = req.body.id;
+    let notes = notesArr;
+    var indexNum
 
+    // let findIndex = (notesArr.indexOf(id: ID));
+    // console.log(findIndex);
+
+    for(var i = 0; i < notesArr.length; i++) {
+      if (notes.id === ID) {
+        indexNum = i;
+      }
+    };
+
+    notes.splice (indexNum, 1)
+
+    fs.writeFileSync(
+      path.join(__dirname, './db/db.json'),
+      JSON.stringify(notes, null, 2)
+  );
+
+    res.json(notes);
+ });
 
 
 // GET /notes should return the notes.html file.
