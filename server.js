@@ -31,14 +31,13 @@ function createNote(body, notesArray) {
 // GET /api/notes should read the db.json file and return all saved notes as JSON.
 app.get('/api/notes', (req, res) => {
     let results = notes;
-    // console.log(req.query)
     res.json(results);
  });
 
 
 // POST /api/notes should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client. 
 app.post('/api/notes', (req, res) => {
-    // set id based on what the next index of the array will be
+    // set id based on string returned from uniqid npi
     req.body.id = uniqid();
   
     // if (!validateAnimal(req.body)) {
@@ -66,7 +65,3 @@ app.get('/*', (req, res) => {
 app.listen(PORT, () => {
 console.log(`API server now on port ${PORT}!`);
 });
-
-
-
-
