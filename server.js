@@ -2,35 +2,56 @@
 const express = require('express');
 const app = express();
 
+// for the ids for the notes
+var uniqid = require('uniqid'); 
+
 // const inquirer =require('inquirer');
 const notes = require('./Develop/db/db.json');
 
 const PORT = process.env.PORT || 3001;
 
-
-// const fs =require('fs');
+const fs =require('fs');
+const path = require('path');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
 
-const apiRoutes = require('./routes/apiRoutes');
+// const apiRoutes = require('./routes/apiRoutes');
 // const htmlRoutes = require('./routes/htmlRoutes');
 
+function createNote(body, notesArray) {
+    const note = body;
+    notesArray.push(note);
+    fs.writeFileSync(
+      path.join(__dirname, './Develop/db/db.json'),
+      JSON.stringify({ notes: notesArray }, null, 2)
+    );
+    return note;
+  }
 
 // GET /api/notes should read the db.json file and return all saved notes as JSON.
 app.get('/api/notes', (req, res) => {
     let results = notes;
     console.log(req.query)
     res.json(results);
-    // return 'Develop\public\index.html'
-});
+ });
 
-app.use('/', apiRoutes);
+// app.use('/', apiRoutes);
 
-
-
+// POST /api/notes should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client. 
+app.post('/api/notes', (req, res) => {
+    // set id based on what the next index of the array will be
+    req.body.id = uniqid();
+  
+    // if (!validateAnimal(req.body)) {
+    //   res.status(400).send('The animal is not properly formatted.');
+    // } else {
+      const note = createNote(req.body, notes);
+      res.json(note);
+    // }
+  });
 
 app.listen(PORT, () => {
 console.log(`API server now on port ${PORT}!`);
@@ -63,4 +84,3 @@ console.log(`API server now on port ${PORT}!`);
 
 
 
-// POST /api/notes should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client. You'll need to find a way to give each note a unique id when it's saved (look into npm packages that could do this for you).

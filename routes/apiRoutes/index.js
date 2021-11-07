@@ -1,8 +1,8 @@
-var express = require('express')
-var router = express.Router()
+// var express = require('express')
+// var router = express.Router()
 
-const notesRoutes = require('../apiRoutes/notesHTML');
+// const notesRoutes = require('../apiRoutes/notesHTML');
 
-router.use(notesRoutes);
+// router.use(notesRoutes);
 
-module.exports = router;
+// module.exports = router;
